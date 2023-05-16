@@ -10,7 +10,8 @@
     padding: 0;
     margin: 0;
 }
-ul, li {
+ul,
+li {
     list-style-type: none;
 }
 a {
@@ -21,12 +22,28 @@ html,
 body {
     width: 100%;
     height: 100%;
+    line-height: 140%;
 }
 body {
     color: #fff;
-    background-color: #2d2d2d;
     font-family: CalibriRegular;
     font-size: 16px;
+    background-color: #2d2d2d;
+    position: relative;
+    &.dark {
+        &::after {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #00000073;
+        }
+    }
+}
+button {
+    border: none;
 }
 .wrapper {
     min-height: 100%;
@@ -36,12 +53,24 @@ body {
 }
 .page {
     flex: 1 1 auto;
+    padding: 20px 0px;
+    margin-right: 50px;
+    padding-bottom: 40px;
+    width: 100vw;
 }
 [class*="container"] {
     max-width: 1460px;
     width: 100%;
     margin: 0 auto;
-    padding: 0 10px;
+    padding: 0 20px;
+}
+.title {
+    font-size: 40px;
+    font-family: CalibriBold;
+    line-height: 130%;
+    @media (max-width: 767.98px) {
+        font-size: 25px;
+    }
 }
 
 .header {
@@ -59,19 +88,31 @@ body {
         min-width: 80px;
         position: fixed;
         top: 0;
-        background-color: #2f446d;
+        z-index: 5;
         left: 0;
         gap: 15px;
+        &::after {
+            content: "";
+            background-color: #2f446d;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
     }
 
     &__logo {
-        @media(max-height: 510px){
+        position: relative;
+        z-index: 200;
+        @media (max-height: 510px) {
             order: 2;
         }
     }
 
     &__menu {
-        @media(max-height: 510px){
+        @media (max-height: 510px) {
             order: 1;
         }
     }
@@ -80,7 +121,9 @@ body {
         display: flex;
         flex-direction: column;
         gap: 21px;
-        @media(max-height: 510px){
+        position: relative;
+        z-index: 200;
+        @media (max-height: 510px) {
             order: 3;
         }
         margin-bottom: 25px;
@@ -95,74 +138,285 @@ body {
         align-items: center;
         justify-content: center;
         transition: border 0.3s ease;
-        &:hover{
+        &:hover {
             border-color: #7d7f16;
         }
-        img{
+        img {
             max-width: 100%;
         }
     }
 }
 .menu {
+    @media (min-height: 510px) {
+        position: relative;
+        z-index: 200;
+    }
     &__body {
-        @media(max-height: 510px){
+        @media (max-height: 510px) {
             position: fixed;
             height: 100%;
             background-color: #253554;
-            padding: 10px 20px 10px 100px;
+            padding: 30px 20px 10px 100px;
             opacity: 0;
-            left: 0;
+            left: -100%;
+            display: flex;
+            margin-top: -20px;
+            transition: all 0.4s ease;
+            &.open {
+                opacity: 1;
+                left: 0;
+            }
         }
     }
 
     &__list {
-        writing-mode: vertical-lr;
-        transform: rotate(180deg);
+        flex-wrap: wrap;
+        @media (min-height: 510px) {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+        }
+        @media (max-height: 510px) {
+            flex-direction: column;
+            justify-content: center;
+            padding: 0px 15px;
+        }
         display: flex;
+        flex: 1 1 auto;
         gap: 58px;
         align-items: center;
-        @media(max-height: 600px){
+        @media (max-height: 600px) {
             gap: 30px;
         }
     }
 
     &__item {
-        a{
+        a {
             transition: color 0.3s ease;
-            &:hover{
+            &:hover {
                 color: #babd21;
             }
         }
     }
 
     &__icon {
-        @media(max-height: 510px){
+        @media (max-height: 510px) {
             width: 30px;
             position: relative;
+            z-index: 200;
             height: 20px;
-            &::after,&::before, span::after{
+            &::after,
+            &::before,
+            span::after {
                 background-color: #babd21;
                 width: 100%;
                 position: absolute;
                 content: "";
                 height: 1.5px;
                 left: 0;
+                transition: transform 0.3s ease;
             }
-            &::after{
+            &::after {
                 top: 0;
             }
-            &::before{
+            &::before {
                 bottom: 0;
             }
-            span::after{
+            span::after {
                 top: 50%;
                 transform: translate(0, -50%);
+            }
+            &.active {
+                transform: translate(40%, 0);
+                &::after {
+                    transform: rotate(45deg) translate(0, 15px);
+                }
+                &::before {
+                    transform: rotate(-45deg) translate(0, -15px);
+                }
+                span::after {
+                    transform: scale(0);
+                }
             }
         }
     }
 }
-.logo{
-    img{
+.logo {
+    position: relative;
+    z-index: 200;
+    img {
         width: 37px;
+    }
+}
+
+.about {
+    margin-bottom: 96px;
+    @media (max-width: 767.98px) {
+        margin-bottom: 35px;
+    }
+}
+.about__title {
+    margin-bottom: 0.3em;
+}
+
+.about__text {
+    margin-bottom: 33px;
+    p {
+        &:not(:last-child) {
+            margin-bottom: 1em;
+        }
+    }
+}
+.about__button {
+    padding: 15px 45px;
+    background-color: #083997;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 0.055em;
+    font-family: CalibriBold;
+    cursor: pointer;
+    color: inherit;
+    @media (max-width: 767.98px) {
+        font-size: 16px;
+    }
+    &:hover {
+        transition: background-color 0.3s ease;
+        background-color: #062f7a;
+    }
+}
+
+.gallery {
+    margin-bottom: 96px;
+    @media (max-width: 767.98px) {
+        margin-bottom: 35px;
+    }
+}
+.gallery__container {
+}
+.gallery__title {
+    margin-bottom: 0.4em;
+}
+.title {
+}
+.gallery__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 9px;
+}
+.gallery__item {
+    position: relative;
+    display: block;
+    padding-bottom: 70%;
+    img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+    }
+}
+
+.rewievs {
+    /* margin-left: calc(100vw - 50%); */
+    margin-left: 40px;
+}
+.rewievs__title {
+    margin-bottom: 0.3em;
+}
+.rewievs__items {
+    display: flex;
+    column-gap: 44px;
+    @media (max-width: 767.98px) {
+        column-gap: 15px;
+    }
+    overflow-x: auto;
+    padding-bottom: 30px;
+    &::-webkit-scrollbar {
+        height: 15px;
+        background: #5891b1;
+        border-radius: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        height: 15px;
+        background: #5891b1;
+        border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #3045ff;
+        border-radius: 5px;
+        &:hover{
+            background: #2434c5;
+        }
+    }
+}
+.rewievs__item {
+    flex: 0 0 400px;
+    @media (max-width: 767.98px) {
+        flex: 0 0 280px;
+    }
+}
+.rewievs__header {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin: -5px;
+    border-radius: 7px 0px 0px 7px;
+    transition: background-color 0.4s ease;
+    position: relative;
+    &::after {
+        position: absolute;
+        right: 0;
+        height: 100%;
+        width: 3px;
+        background-color: rgba(88, 177, 108, 0.71);
+        top: 0;
+        content: "";
+    }
+    &:hover {
+        background-color: #6a138036;
+        .rewievs__name {
+            color: #eb8807;
+        }
+    }
+    margin-bottom: 19px;
+    @media (max-width: 767.98px) {
+        margin-bottom: 9px;
+    }
+}
+.rewievs__icon {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+    }
+}
+.rewievs__info {
+    padding: 0px 14px;
+}
+.rewievs__name {
+    font-family: CalibriBold;
+    font-size: 18px;
+    margin-bottom: 0.15em;
+    transition: color 0.3s ease;
+}
+.rewievs__date {
+}
+.rewievs__text {
+    padding: 10px;
+    border: 2px solid #5876b1;
+    border-radius: 8px;
+    p {
+        &:not(:last-child) {
+            margin-bottom: 1em;
+        }
     }
 }
